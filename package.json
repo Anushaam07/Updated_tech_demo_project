@@ -1,0 +1,36 @@
+{
+  "name": "rag-api-promptfoo",
+  "version": "2.0.0",
+  "description": "Promptfoo Production Testing Suite for RAG API",
+  "scripts": {
+    "test:redteam:rag": "promptfoo redteam run --config promptfoo.redteam-rag.yaml",
+    "test:redteam:llm": "promptfoo redteam run --config promptfoo.redteam-llm.yaml",
+    "test:redteam:confidential": "promptfoo redteam run --config promptfoo.redteam-confidential-data.yaml",
+    "test:redteam:all": "npm run test:redteam:rag && npm run test:redteam:llm",
+    "test:guardrails:llm": "promptfoo eval --config promptfoo.guardrails-llm.yaml",
+    "test:guardrails:all": "npm run test:guardrails:rag && npm run test:guardrails:llm",
+    "test:evaluation": "promptfoo eval --config promptfoo.evaluation.yaml",
+    "test:models": "promptfoo eval --config promptfoo.model-comparison.yaml",
+    "test:all": "npm run test:evaluation && npm run test:guardrails:all",
+    "test:security": "npm run test:redteam:all",
+    "test:production": "npm run test:evaluation && npm run test:guardrails:all && npm run test:security",
+    "view": "promptfoo view",
+    "view:latest": "promptfoo view --latest",
+    "cache:clear": "promptfoo cache clear",
+    "clean": "rm -rf ./promptfoo-output/*"
+  },
+  "keywords": [
+    "promptfoo",
+    "rag",
+    "security",
+    "testing",
+    "llm",
+    "red-team",
+    "production"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "promptfoo": "latest"
+  }
+}
