@@ -25,9 +25,17 @@ from app.config import (
 )
 from app.middleware import security_middleware
 from app.services.database import PSQLDatabase, ensure_vector_indexes
-from app.routes import document_routes, pgvector_routes, guardrails_routes
+from app.routes import document_routes, guardrails_routes
 from app.routes import chat_routes_with_external_guardrails as chat_routes
 from app.routes import chat_routes as chat_routes_unsafe  # For demo comparison
+
+# Import pgvector_routes only if it exists (for debugging)
+try:
+    from app.routes import pgvector_routes
+    PGVECTOR_ROUTES_AVAILABLE = True
+except ImportError:
+    PGVECTOR_ROUTES_AVAILABLE = False
+    logger.warning("pgvector_routes module not found - debug routes will not be available")
 
 
 @asynccontextmanager
@@ -81,8 +89,9 @@ app.include_router(document_routes.router)
 app.include_router(chat_routes.router, tags=["Chat"])  # Protected with guardrails
 app.include_router(chat_routes_unsafe.router, tags=["Demo - Unsafe"])  # NO guardrails (demo only)
 app.include_router(guardrails_routes.router, tags=["Guardrails"])
-if debug_mode:
+if debug_mode and PGVECTOR_ROUTES_AVAILABLE:
     app.include_router(router=pgvector_routes.router)
+    logger.info("Debug mode enabled - pgvector routes included")
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
