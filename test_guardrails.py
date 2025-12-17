@@ -164,7 +164,7 @@ def test_chat_integration():
     print(f"Status: {response.status_code}")
     print(f"Response: {json.dumps(response.json(), indent=2)}")
     assert response.status_code == 400, "Should return 400 for blocked query"
-    print("✅ PASS: Chat endpoint blocked sensitive query")
+    print(" PASS: Chat endpoint blocked sensitive query")
 
     # Test allowed query
     print("\n--- Test 6b: Chat with Allowed Query ---")
